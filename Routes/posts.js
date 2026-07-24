@@ -5,8 +5,11 @@ const router = express.Router();
 
 router.get("/",async (req,res)=>{
     let list = await post.find({});
-
     res.json(list);
 })
+
+
+
+router.get("/new")
 
 module.exports = router;
