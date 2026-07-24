@@ -56,20 +56,21 @@ const postSchema = new Schema(
         required:true
     },
 
-    images:[
+    image:[
         {
             url:String,
             filename:String
         }
     ],
 
-    likes:{
-        type:Number,
-        default:0,
-        min:0
-    },
+likes:[
+    {
+        type:Schema.Types.ObjectId,
+        ref:"Account"
+    }
+],
 
-    comments:[commentSchema]
+    comments:[commentSchema],
 
 },
 {
