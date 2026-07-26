@@ -10,7 +10,7 @@ const session = require("session")
 
 
 app.use(express.json());
-app.use(cookeParser());
+app.use(cookieParser());
 app.use("/Camcus",posts);
 app.use("/api/auth",user);
 

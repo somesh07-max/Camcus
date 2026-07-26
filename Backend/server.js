@@ -1,5 +1,5 @@
-import app from "./app.js";
-import connectDB from "./config/database.js";
+const app = require("./src/app.js")
+const connectDB = require("./src/config/database.js");
 
 const PORT = 3000;
 
