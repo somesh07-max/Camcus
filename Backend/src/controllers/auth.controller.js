@@ -2,6 +2,7 @@ const User = require("../Models/user.js");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken")
 const cookieParser = require("cookie-parser")
+const config = require("../config/config.js")
 
 
 async function Register(req,res){
@@ -87,6 +88,68 @@ res.status(201).json(({
 
 }
 
+async function refreshToken(req,res){
+    const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return res.status(404).json({
+                success: false,
+                message: "Refresh token missing"
+            });
+        }
+    
+        const decoded = jwt.verify(
+            refreshToken,
+            config.JWT_SECRET
+        );
+
+        if(!decoded){
+        return    res.status(404).json({
+                success:false,
+                message:"User not authorized",
+            })
+        }
+
+        const accessToken = jwt.sign(
+        {
+            id:decoded._id,
+        },
+        confi.JWT_SECRET,
+        {
+            expiresIn:"15m"
+        });
+
+        const newRefreshToken = jwt.sign(
+            {
+                id:decoded.id
+            },
+            config.JWT_SECRET,
+            {
+                expiresIn:"7d"
+            }
+        )
+
+        res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.status(200).json({
+            success:true,
+            message:"user get authorized",
+            accessToken,
+
+
+        })
+
+
+}
+
+
+
 module.exports = {
-    Register
+    Register,
+    refreshToken,
 };
