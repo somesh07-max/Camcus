@@ -54,21 +54,26 @@ const postSchema = new Schema(
     author:{
         type:Schema.Types.ObjectId,
         ref:"User",
-        required:true
+        required:true,
+        index:true,
     },
 
-    image:[
+image:{
+    type:[
         {
             url:String,
             filename:String
         }
     ],
+    default:[]
+},
 
-likes:
+likes: [
     {
-        type:Number,
-        min:0,
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
+]
 ,
 
     comments:[commentSchema],
