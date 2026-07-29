@@ -69,6 +69,44 @@ async function PostDetail(req,res){
 }
 
 async function Edit(req,res){
-    const 
+    const {id} = req.params;
+   let post = await Post.findByIdAndUpdate(
+    id,
+    req.body,
+    { new: true ,
+        runValidatiors:true,
+    }
+);
+
+    if(!post){
+        return res.status(404).json({
+            success:false,
+            message:"post not found"
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+        post,
+    })
+
+}
+
+async function Delete(req,res){
+    const {id} = req.params;
+    const  post = await Post.findByIdAndDelete(id);
+
+    if(!post){
+        return res.status(404).json({
+            success:false,
+            message:"post not found",
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+         message: "Post deleted successfully",
+    })
+    
 }
 
