@@ -110,3 +110,26 @@ async function Delete(req,res){
     
 }
 
+async function filter(req, res) {
+    const { category } = req.params;
+
+    const posts = await Post.find({ category });
+
+    if (posts.length === 0) {
+        return res.status(404).json({
+            success: false,
+            message: "No posts found for this category"
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        posts
+    });
+}
+
+
+
+
+
+
