@@ -128,6 +128,54 @@ async function filter(req, res) {
     });
 }
 
+async function getPost(req,res){
+    const {search,category,page=1,limit=10,sort} = req.query;
+    let filter = {};
+
+    if (category) {
+        filter.category = category;
+    }
+
+  
+    if (search) {
+        filter.$or = [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                description: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }
+        ];
+    }
+
+
+    const query = Post.find({filter});
+    if (sort === "latest") {
+        query = query.sort({ createdAt: -1 });
+    } else if (sort === "oldest") {
+        query = query.sort({ createdAt: 1 });
+    }
+
+    const pageNo = Number(page);
+    const limitNo = Number(limit);
+
+    query = query.skip((pageNo -1)*limitNo).limit(limitNo)
+     const posts = await query;
+
+     res.status(200).json({
+        success:true,
+        count:post.length,
+        posts
+     })
+
+
+}
 
 
 
