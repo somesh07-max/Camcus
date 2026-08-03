@@ -1,4 +1,5 @@
 const Scholar = require("../Models/scholarship");
+const { findById } = require("../Models/user.js");
 
 async function main(req, res) {
     const scholarPosts = await Scholar.find({})
@@ -42,6 +43,65 @@ async function create(req, res) {
         scholarPost
     });
 }
+
+async function show(req,res){
+    const { id} = req.params;
+    const post = await Scholar.findById(id);
+    if(!post){
+        return res.status(404).json({
+            success:false,
+            message:"Scholarship not found"
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+        post
+    })
+}
+
+async function EditGet(req,res){
+    const {id} = req.params;
+
+    const post  = await findById(id);
+    if(!post){
+        return res.status(404).json({
+            success:false,
+            message:"Scholar does not exist"
+        })
+    }
+    res.staus(200).json({
+        success:true,
+        post
+    })
+
+}
+
+async function EditPost(req,res){
+    const {id} = req.params;
+    let post = await Post.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true ,
+            runValidatiors:true,
+        }
+    );
+    if(!post){
+        return res.status(404).json({
+            success:false,
+            message:"Post does not exist"
+        }
+    
+    )
+    }
+
+    res.status(200).json({
+        success:true,
+        post,
+    })
+
+}
+
 
 
 
