@@ -178,6 +178,63 @@ async function getPost(req,res){
 }
 
 
+async function likePost(req, res) {
+    try {
+        const { id } = req.params;
+
+        const post = await Post.findById(id);
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found"
+            });
+        }
+
+        const userId = req.user.id;
+
+        const alreadyLiked = post.likes.some(
+            like => like.toString() === userId.toString()
+        );
+
+        if (alreadyLiked) {
+            return res.status(400).json({
+                success: false,
+                message: "You have already liked this post"
+            });
+        }
+
+        post.likes.push(userId);
+
+        await post.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Post liked successfully",
+            likes: post.likes.length
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+}
+
+
+
+module.exports = {
+    landingPage,
+    create,
+    show,
+    PostDetail,
+    Edit,
+    Delete,
+    filter,
+    getPost,
+    likepost
+}
 
 
 

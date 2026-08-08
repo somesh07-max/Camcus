@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/config.js");
-const Post = require("../models/Post");
+const Post = require("../models/Post.js");
 
 async function authorize(req, res, next) {
     try {
