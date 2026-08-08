@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/config.js");
 const Post = require("../models/Post.js");
+const Scholar = require("../Models/scholarship.js")
 
 async function authorize(req, res, next) {
     try {
@@ -43,4 +44,42 @@ async function authorize(req, res, next) {
     }
 }
 
-module.exports = authorize;
+async function authorizeScholar(req,res,next){
+    try{
+        const token = req.headers.authorization?.split(" ")[1];
+
+        if(!token){
+            return res.status(404).json({
+                success:false,
+                messsage:"token not found",
+            })
+        }
+        const decoded = jwt.verify(token,config.JWT_SECRET);
+        const {id} = req.params;
+
+        const post = await Scholar.findById(id);
+        if(!post){
+            return res.status(404).json({
+                success:false,
+                message:"post not found",
+            })
+        }
+
+        if(!post.author.equals(decoded.id)){
+            return res.status(403).json({
+                success:true,
+                message:"You are not authorized"
+            })
+        }
+
+       next();
+    }
+    catch(e){
+        return res.status(401).json({
+            success: false,
+            message: "Invalid token"
+        });
+    }
+}
+
+module.exports = {authorize,authorizeScholar};
