@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const ScholarController = require("../controllers/scholarship.controller.js");
+const ScholarController = require("../controllers/scholar.controller.js");
 
-const { authenticate } = require("../middlewares/authenticate.middleware.js");
+const  authenticate  = require("../middlewares/authenticate.middleware.js");
 const { authorizeScholar } = require("../middlewares/authorize.Middleware.js");
 
 

@@ -15,6 +15,8 @@ app.use("/Camcus",posts);
 app.use("/api/auth",user);
 
 
+const errorHandler = require("./middlewares/errorhandler.middleware.js");
+app.use(errorHandler);
 
 
 app.get("/",(req,res)=>{

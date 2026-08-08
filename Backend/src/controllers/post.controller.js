@@ -1,4 +1,5 @@
-const Post = require("../Models/post.js")
+const Post = require("../Models/post.js");
+const ExpressError = require("../utils/AppError.js");
 
 async function landingPage(req,res){
     let posts = await Post.find({}).sort({createdAt:-1});
@@ -8,7 +9,7 @@ async function landingPage(req,res){
     })
 }
 
-async function create(req,res){
+async function create(req,res,next){
     let {
         title,
         description,
@@ -33,14 +34,11 @@ async function create(req,res){
 }
 
 
-async function show(req,res){
+async function show(req,res,next){
     const {id}= req.params;
     const post = await findById({id});
     if(!post){
-        return res.status(404).json({
-            success:true,
-            message:"Post not found",
-        })
+       return   next(new ExpressError(404,"Page not found"))
     }
 
     res.status(200).json({
@@ -56,10 +54,7 @@ async function PostDetail(req,res){
     const {id} = req.params;
     const post = await findOne({id});
     if(!post){
-        return res.status(404).json({
-            success:false,
-            message:"Post not found",
-        })
+        return next(new ExpressError(404,"Page not found"))
     }
 
     res.status(200).json({
@@ -233,7 +228,7 @@ module.exports = {
     Delete,
     filter,
     getPost,
-    likepost
+    likePost
 }
 
 

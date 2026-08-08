@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
+
 const PostController = require("../controllers/post.controller.js");
 
 // Authentication middleware
 const { authorize } = require("../middlewares/authorize.Middleware.js");
-const { authenticate }= require("../middlewares/authenticate.middleware.js")
+const  authenticate = require("../middlewares/authenticate.middleware.js")
 
 
 // Get all posts / search / filter / pagination
@@ -17,7 +18,7 @@ router.get("/feed", PostController.landingPage);
 
 
 // Create a new post
-router.post("/",authenticate, PostController.create);
+router.post("/",authenticate,PostController.create);
 
 
 // Get posts by category
@@ -36,7 +37,7 @@ router.put("/:id", authenticate ,authorize,PostController.Edit);
 router.delete("/:id",authenticate, authorize,PostController.Delete);
 
 //Lika  post 
-router.put("/:id",authenticate,PostController.likepost);
+router.put("/:id",authenticate,PostController.likePost);
 
 
 module.exports = router;

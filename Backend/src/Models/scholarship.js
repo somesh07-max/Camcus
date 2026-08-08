@@ -72,4 +72,4 @@ const scholarSchema = new Schema(
     timestamps:true
 });
 
-module.exports = new mongoose.Model("Scholarship",scholarSchema)
+module.exports = new mongoose.model("Scholarship",scholarSchema)

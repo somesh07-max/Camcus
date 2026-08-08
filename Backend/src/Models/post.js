@@ -83,4 +83,6 @@ likes: [
     timestamps:true
 });
 
-module.exports = new mongoose.model("Post",postSchema)
+// module.exports = new mongoose.model("Post",postSchema)
+
+module.exports =mongoose.models.Post ||  mongoose.model("Post", postSchema);
